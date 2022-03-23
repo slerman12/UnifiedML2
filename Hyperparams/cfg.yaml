@@ -1,0 +1,186 @@
+defaults:
+  - _self_
+  - task@_global_: atari/pong
+  - override hydra/launcher: submitit_local
+
+# Agent
+obs_shape: ???  # To be specified later
+action_shape: ??? # To be specified later
+data_norm: null
+trunk_dim: 50
+hidden_dim: 1024
+explore_steps: 2000
+lr: 1e-4
+lr_decay_epochs: 0
+weight_decay: 0
+ema_decay: 0.99
+# Domains
+discrete: ??? # To be specified later
+offline: false  # Defaults to true for classify tasks
+RL: true
+supervise: true
+generate: false
+# Replay
+obs_spec: ??? # To be specified later
+action_spec: ??? # To be specified later
+steps_per_epoch: null
+nstep: 10
+batch_size: 256
+discount: 0.99
+# Training
+seed_steps: 2000
+learn_per_steps: 2
+learn_steps_after: 1000
+# Evaluating
+evaluate_per_steps: 5000
+evaluate_episodes: 10
+ema: false
+# Saving
+save: true
+save_per_steps: 0
+save_path: ./Checkpoints/${experiment}/${Agent}/${environment.suite}/${task_name}_${seed}_Agent.pt
+load: false
+load_per_steps: 0
+# Logging
+log_video: ${generate}
+log_per_episodes: 1
+# Plotting
+plot_per_steps: 10000
+# Misc
+device: ??? # To be specified later
+parallel: false
+num_workers: 4
+# Experiment
+Agent: Agents.DQNAgent
+seed: 1
+experiment: Exp
+
+environment:
+  _target_: Datasets.Environment.Environment
+  task_name: ${task_name}
+  frame_stack: ${frame_stack}
+  action_repeat: ${action_repeat}
+  episode_max_frames: false
+  episode_truncate_resume_frames: 1000
+  seed: ${seed}
+  suite: ${suite}
+  offline: ${offline}
+  generate: ${generate}
+  batch_size: ${batch_size}
+  num_workers: ${num_workers}
+
+agent:
+  _target_: ${Agent}
+  _recursive_: false
+  obs_shape: ${obs_shape}
+  action_shape: ${action_shape}
+  trunk_dim: ${trunk_dim}
+  hidden_dim: ${hidden_dim}
+  data_norm: ${data_norm}
+  recipes: ${recipes}
+  lr: ${lr}
+  lr_decay_epochs: ${lr_decay_epochs}
+  weight_decay: ${weight_decay}
+  ema_decay: ${ema_decay}
+  ema: ${ema}
+  explore_steps: ${explore_steps}
+  stddev_schedule: ${stddev_schedule} # Specified in task/100K,500K,etc.
+  stddev_clip: 0.3
+  discrete: ${discrete}
+  RL: ${RL}
+  supervise: ${supervise}
+  generate: ${generate}
+  device: ${device}
+  parallel: ${parallel}
+  log: false
+
+replay:
+  _target_: Datasets.ExperienceReplay.ExperienceReplay
+  batch_size: ${batch_size}
+  num_workers: ${num_workers}
+  capacity: 1000000
+  obs_spec: ${obs_spec}
+  action_spec: ${action_spec}
+  suite: ${suite}
+  task: ${task_name}
+  steps_per_epoch: ${steps_per_epoch}
+  nstep: ${nstep}
+  discount: ${discount}
+  transform: null
+  offline: ${offline}
+  generate: ${generate}
+  save: false
+  load: false
+  path: ./Datasets/ReplayBuffer/${experiment}/${Agent}/${environment.suite}/${task_name}_${seed}_Memories
+
+logger:
+  _target_: Logger.Logger
+  path: ./Benchmarking/${experiment}/${Agent}/${environment.suite}/
+  task: ${task_name}
+  seed: ${seed}
+  wandb: False
+
+vlogger:
+  _target_: Vlogger.Vlogger
+  path: ./Benchmarking/${experiment}/${Agent}/${environment.suite}/${task_name}_${seed}_Video_Image
+  fps: 20
+  reel: ${generate}
+
+plotting:
+  _target_: Plot.plot
+  path: ./Benchmarking/${experiment}/Plots
+  plot_experiments: ${experiment}
+  plot_agents: null
+  plot_suites: null
+  plot_tasks: null
+  steps: ${train_steps}
+  plot_tabular: false
+
+# Can optionally pass in custom architectures such as those defined in ./Blocks/Architectures
+Aug: null  # Shorthand for recipes.aug._target_
+Eyes: null  # Shorthand for recipes.encoder.eyes._target_
+pool: null  # Shorthand for recipes.encoder.pool._target_
+recipes:
+  aug:
+    _target_: ${Aug}
+  encoder:
+    eyes:
+      _target_: ${Eyes}
+      input_shape: ${obs_shape}
+      output_dim: null
+    pool:
+      _target_: ${pool}
+      input_shape: null
+      output_dim: null
+  actor:
+    trunk:
+      _target_: null
+      input_shape: null
+      output_dim: ${trunk_dim}
+    pi_head:
+      _target_: null
+      input_shape:
+        - ${trunk_dim}
+  critic:
+    trunk:
+      _target_: null
+      input_shape: null
+      output_dim: ${trunk_dim}
+    q_head:
+      _target_: null
+      input_shape: null
+
+hydra:
+  run:
+    dir: ./
+  sweep:
+    dir: ./
+    subdir: ./
+  launcher:
+    timeout_min: 4300
+    cpus_per_task: 10
+    gpus_per_node: 1
+    tasks_per_node: 1
+    mem_gb: 160
+    nodes: 1
+    submitit_folder: ./

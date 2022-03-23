@@ -1,0 +1,9 @@
+defaults:
+      - 100K
+      - _self_
+    
+suite: atari
+action_repeat: 4
+nstep: 10
+frame_stack: 3
+task_name: BankHeist
