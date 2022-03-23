@@ -1,8 +1,11 @@
 ![alt text](https://i.imgur.com/kXEbZ8J.png)
 
 [![Accolade](https://img.shields.io/badge/State_of_the_Art-Data--Efficient_RL-blue.svg??style=flat&logo=google-analytics)]()
+
 [![Accolade](https://img.shields.io/badge/Modern,_Academic--Standard-Image_Classification-blue.svg??style=flat&logo=instatus)]()
+
 [![Accolade](https://img.shields.io/badge/Technically--Working-Generative_Modeling-blue.svg??style=flat&logo=angellist)]()
+
 [![Accolade](https://img.shields.io/badge/Unified_in_one_Framework-Seamless,_General.svg??style=flat&logo=immer)]()
 
 ### Quick Links
