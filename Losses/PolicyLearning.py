@@ -13,7 +13,7 @@ def deepPolicyGradient(actor, critic, obs, step, num_actions=1, reward=0, discou
 
     actions = Pi.rsample(num_actions)
     if actor.discrete and one_hot:
-        actions = Utils.rone_hot(actions)
+        actions = Utils.rone_hot(actions, null_value=-1)
 
     Q = critic(obs, actions)
 
@@ -27,7 +27,6 @@ def deepPolicyGradient(actor, critic, obs, step, num_actions=1, reward=0, discou
     policy_loss = -q.mean()
 
     if logs is not None:
-        assert isinstance(logs, dict)
         logs['policy_loss'] = policy_loss.item()
         logs['DPG_q_stddev'] = Q.stddev.mean().item()
         logs['Pi_prob'] = Pi.log_prob(actions).exp().mean().item()

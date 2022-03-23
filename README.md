@@ -1,4 +1,4 @@
-![alt text](https://i.imgur.com/kXEbZ8J.png)
+![alt text](https://i.imgur.com/rjw4eFg.png)
 
 [![Accolade](https://img.shields.io/badge/State_of_the_Art-Data--Efficient_RL-blue.svg??style=flat&logo=google-analytics)]()<br>
 [![Accolade](https://img.shields.io/badge/Modern,_Academic--Standard-Image_Classification-blue.svg??style=flat&logo=instatus)]()<br>
@@ -72,6 +72,24 @@ For detailed documentation, [see our :scroll:](https://arxiv.com).
   year    = {2022}
 }
 ```
+
+[comment]: <> (```bibtex)
+
+[comment]: <> (@inproceedings{UML,)
+
+[comment]: <> (  title={UnifiedML: A Unified Framework For Intelligence Training},)
+
+[comment]: <> (  author={Lerman, Sam and Xu, Chenliang},)
+
+[comment]: <> (  booktitle={booktitle},)
+
+[comment]: <> (  year={2022},)
+
+[comment]: <> (  url={https://openreview.net})
+
+[comment]: <> (})
+
+[comment]: <> (```)
 
 If you use this work, please give us a star :star: and cite the above.
 
@@ -392,7 +410,7 @@ All files are designed to be useful for educational and innovational purposes in
 
 Support financially  
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg?style=flat)](https://www.paypal.com/cgi-bin/) <br>
-We are a nonprofit, single-PhD student team whose bank account is quickly hemmoraging. Compute resources appreciated especially.
+We are a nonprofit, single-PhD student team. Compute resources appreciated especially.
 
 Feel free to [contact **agi.\_\_init\_\_**](mailto:agi.init@gmail.com). Angel investors welcome.
 

@@ -34,9 +34,6 @@ class RandomAgent(torch.nn.Module):
         with torch.no_grad(), Utils.act_mode(self.actor):
             action = self.actor(obs) * 2 - 1  # [-1, 1]
 
-            if self.discrete:
-                action = torch.argmax(action, -1)
-
             if self.training:
                 self.step += 1
 

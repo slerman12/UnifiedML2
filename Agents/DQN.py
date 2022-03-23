@@ -49,7 +49,8 @@ class DQNAgent(torch.nn.Module):
 
         self.encoder = Utils.Rand(trunk_dim) if generate \
             else CNNEncoder(obs_shape, data_norm=data_norm, recipe=recipes.visual_encoder, parallel=parallel,
-                            lr=lr, lr_decay_epochs=lr_decay_epochs, weight_decay=weight_decay, ema_decay=ema_decay * ema)
+                            lr=lr, lr_decay_epochs=lr_decay_epochs, weight_decay=weight_decay,
+                            ema_decay=ema_decay * ema)
         
         repr_shape = (trunk_dim,) if generate \
             else self.encoder.repr_shape
@@ -78,7 +79,7 @@ class DQNAgent(torch.nn.Module):
         with torch.no_grad(), Utils.act_mode(self.encoder, self.actor, self.critic):
             obs = torch.as_tensor(obs, device=self.device)
 
-            # EMA targets
+            # EMA shadows
             encoder = self.encoder.ema if self.ema and not self.generate else self.encoder
             actor = self.actor.ema if self.ema and not self.discrete else self.actor
             critic = self.critic.ema if self.ema else self.critic

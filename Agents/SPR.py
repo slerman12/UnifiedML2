@@ -94,7 +94,7 @@ class SPRAgent(torch.nn.Module):
         with torch.no_grad(), Utils.act_mode(self.encoder, self.actor, self.critic):
             obs = torch.as_tensor(obs, device=self.device)
 
-            # EMA targets
+            # EMA shadows
             encoder = self.encoder.ema if self.ema and not self.generate else self.encoder
             actor = self.actor.ema if self.ema and not self.discrete else self.actor
             critic = self.critic.ema if self.ema else self.critic

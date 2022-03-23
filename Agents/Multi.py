@@ -85,14 +85,17 @@ class MultiAgent(torch.nn.Module):
     def act(self, obs):
         obs = Utils.to_torch(obs, self.device)
 
-        # EMA targets
-        encoder = self.sensory_encoder.ema if self.ema and not self.generate else self.sensory_encoder
+        # EMA shadows
+        sensory_encoder = self.sensory_encoder.ema if self.ema and not self.generate else self.sensory_encoder
         actor = self.actor.ema if self.ema and not self.discrete else self.actor
         critic = self.critic.ema if self.ema else self.critic
 
-        with torch.no_grad(), Utils.act_mode(encoder, actor, critic):
+        with torch.no_grad(), Utils.act_mode(sensory_encoder, actor, critic):
             # "Sense"
-            obs = encoder(obs)
+
+            obs = sensory_encoder(obs)
+
+            # "Interact With World"
 
             actions = None if self.discrete \
                 else actor(obs, self.step).sample(self.num_actions) if self.training \

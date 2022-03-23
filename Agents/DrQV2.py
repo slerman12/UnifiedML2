@@ -29,7 +29,7 @@ class DrQV2Agent(torch.nn.Module):
                  ):
         super().__init__()
 
-        self.discrete = discrete and not generate  # Continuous supported!
+        self.discrete = discrete and not generate  # Discrete supported!
         self.supervise = supervise  # And classification...
         self.RL = RL
         self.generate = generate  # And generative modeling, too
@@ -42,8 +42,8 @@ class DrQV2Agent(torch.nn.Module):
 
         self.encoder = Utils.Rand(trunk_dim) if generate \
             else CNNEncoder(obs_shape, data_norm=data_norm, recipe=recipes.encoder, parallel=parallel,
-                            lr=lr, lr_decay_epochs=lr_decay_epochs,
-                            weight_decay=weight_decay, ema_decay=ema_decay * ema)
+                            lr=lr, lr_decay_epochs=lr_decay_epochs, weight_decay=weight_decay,
+                            ema_decay=ema_decay * ema)
 
         repr_shape = (trunk_dim,) if generate \
             else self.encoder.repr_shape
@@ -51,14 +51,14 @@ class DrQV2Agent(torch.nn.Module):
             else action_shape[-1]
 
         self.actor = EnsembleGaussianActor(repr_shape, trunk_dim, hidden_dim, action_dim, recipes.actor,
-                                           1, self.discrete, stddev_schedule=stddev_schedule, stddev_clip=stddev_clip,
-                                           lr=lr, lr_decay_epochs=lr_decay_epochs,
-                                           weight_decay=weight_decay, ema_decay=ema_decay * ema)
+                                           ensemble_size=1, stddev_schedule=stddev_schedule, stddev_clip=stddev_clip,
+                                           lr=lr, lr_decay_epochs=lr_decay_epochs, weight_decay=weight_decay,
+                                           ema_decay=ema_decay * ema)
 
         self.critic = EnsembleQCritic(repr_shape, trunk_dim, hidden_dim, action_dim, recipes.critic,
                                       ignore_obs=generate,
-                                      lr=lr, lr_decay_epochs=lr_decay_epochs,
-                                      weight_decay=weight_decay, ema_decay=ema_decay)
+                                      lr=lr, lr_decay_epochs=lr_decay_epochs, weight_decay=weight_decay,
+                                      ema_decay=ema_decay)
 
         # Image augmentation
         self.aug = Utils.init(recipes, 'aug',
@@ -70,7 +70,7 @@ class DrQV2Agent(torch.nn.Module):
         with torch.no_grad(), Utils.act_mode(self.encoder, self.actor):
             obs = torch.as_tensor(obs, device=self.device)
 
-            # EMA targets
+            # EMA shadows
             encoder = self.encoder.ema if self.ema and not self.generate else self.encoder
             actor = self.actor.ema if self.ema else self.actor
 
@@ -88,9 +88,6 @@ class DrQV2Agent(torch.nn.Module):
                 # Explore phase
                 if self.step < self.explore_steps and not self.generate:
                     action = action.uniform_(-1, 1)
-
-            if self.discrete:
-                action = torch.argmax(action, -1)  # Since discrete is using vector representations
 
             return action
 
@@ -194,7 +191,7 @@ class DrQV2Agent(torch.nn.Module):
 
             # Actor loss
             actor_loss = PolicyLearning.deepPolicyGradient(self.actor, self.critic, obs.detach(),
-                                                           self.step, one_hot=self.discrete, logs=logs)
+                                                           self.step, logs=logs)
 
             # Update actor
             Utils.optimize(actor_loss,
