@@ -391,7 +391,7 @@ All files are designed to be useful for educational and innovational purposes in
 # Contributing
 
 Support financially:  
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg?style=flat)](https://www.paypal.com/cgi-bin/)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg?style=flat)](https://www.paypal.com/cgi-bin/) <br>
 We are a nonprofit, single-PhD student team whose bank account is quickly hemmoraging. Compute resources needed especially.
 
 Feel free to [contact **agi.\_\_init\_\_**](mailto:agi.init@gmail.com). Angel investors welcome.
