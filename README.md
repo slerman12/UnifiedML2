@@ -1,5 +1,10 @@
 ![alt text](https://i.imgur.com/kXEbZ8J.png)
 
+[![Accolade](https://img.shields.io/badge/State_of_the_Art-Data--Efficient_RL-blue.svg??style=flat&logo=google-analytics)]()
+[![Accolade](https://img.shields.io/badge/Modern,_Academic--Standard-Image_Classification-blue.svg??style=flat&logo=instatus)]()
+[![Accolade](https://img.shields.io/badge/Technically--Working-Generative_Modeling-blue.svg??style=flat&logo=angellist)]()
+[![Accolade](https://img.shields.io/badge/Unified_in_one_Framework-Seamless,_General.svg??style=flat&logo=immer)]()
+
 ### Quick Links
 
 - [Setup](#wrench-setting-up)
@@ -382,21 +387,16 @@ For generative modeling, well, it turns out that the difference between a Genera
 
 All files are designed to be useful for educational and innovational purposes in their simplicity and structure.
 
-[comment]: <> (# Contributing)
+# Contributing
 
-[comment]: <> (Contributers needed.)
+Support financially:  
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg?style=flat)](https://www.paypal.com/cgi-bin/)
 
-[comment]: <> (Please donate:)
+We are a nonprofit, single-PhD student team whose bank account is quickly hemmoraging.
 
-[comment]: <> ([![Donate]&#40;https://img.shields.io/badge/Donate-PayPal-green.svg?style=flat&#41;]&#40;https://www.paypal.com/cgi-bin/&#41;)
+Feel free to [contact **agi.\_\_init\_\_**](mailto:agi.init@gmail.com). 
 
-[comment]: <> (We are a nonprofit, single-PhD student team whose bank account is quickly hemmoraging.)
-
-[comment]: <> (Feel free to [contact **agi.\_\_init\_\_**]&#40;mailto:agi.init@gmail.com&#41;. )
-
-[comment]: <> (Angel investors needed...)
-
-[comment]: <> (</details>)
+Angel investors welcome.
 
 # Note
 
